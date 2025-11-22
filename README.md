@@ -64,7 +64,7 @@ cd todo-api && npm start (Runs on port 3001)
 
 cd frontend && npm start (Runs on port 3000)
 ```
-# 📝 Technical Decisions
+## 📝 Technical Decisions
 
 This section details the architectural choices, testing strategy, and key takeaways from the 3-day development cycle
 
@@ -125,6 +125,18 @@ I adopted **All Transitions Coverage (0-switch coverage)** to ensure every possi
 | **Item Level** | `Idle` $\rightarrow$ `Completed` $\rightarrow$ `Idle` | **List Stability Check:** Verifies that completing one item correctly updates its state without destabilizing other items in the list. |
 | **Item Level** | `Idle` $\rightarrow$ `Editing` $\rightarrow$ `Idle` | Verifies the standard update flow, including the toggling of `readOnly` attributes and the appearance of the "Save" button. |
 | **Item Level** | `Idle` $\rightarrow$ `Editing` $\rightarrow$ `Completed` $\rightarrow$ `Idle` | **Edge Case:** Verifies that completing a task *while* in editing mode forcefully exits the edit mode and correctly updates the state to completed. |
+
+#### 🏃‍♂️ Executing the Core Integration Test
+
+To verify the **State Transition** logic and **List Stability** scenarios described above, you can execute the specific frontend test file:
+
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Run the specific test suite
+npm test src/TodoApp.test.tsx
+```
 ---
 
 ### ⏭️ Future Commitments
