@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+### 📝 Project Deep Dive: Technical Decisions & Learnings
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This section details the architectural choices, testing strategy, and key takeaways from the 3-day development cycle, designed to meet the standards of modern engineering practices.
 
-## Available Scripts
+#### 🎯 Project Goal & Strategy
 
-In the project directory, you can run:
+The primary goal of this project was to simulate a real-world **Front-End Coding Challenge** often used by international tech companies. The process prioritized **testability, clean architecture, and error handling** over speed.
 
-### `npm start`
+Our workflow was: **Frontend $\rightarrow$ Backend (Initial) $\rightarrow$ Refactoring $\rightarrow$ Test Design $\rightarrow$ Frontend Testing.**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 💡 Architectural Evolution & Frontend Refactoring
 
-### `npm test`
+Our frontend architecture evolved to comply with current best practices:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **Initial Structure:** The application began with a centralized state (`Home` component) handling all **CRUD** methods and passing them down as props to children (`List` and `Form`).
+* **Refactoring to Custom Hooks (Best Practice):** As asynchronous operations (API calls) were introduced, the logic became complex. We extracted all state management and asynchronous methods into a dedicated custom hook (`useTodos`).
+    * **Benefit:** This achieves a **Separation of Concerns**, making the UI components purely presentational and significantly improving testability and code readability.
+* **Performance:** Implemented `useCallback` on memoized functions within the custom hook to prevent the unnecessary re-creation of functions, optimizing rendering performance when passed as dependencies or props.
+* **UX & Error Handling:** Fixed critical issues regarding the user experience:
+    * **Loading State:** Implemented a visible `Loading...` state during API calls to improve user feedback during asynchronous operations.
+    * **Error Delegation:** Ensured API errors were properly caught and delegated to the UI for user display and logging.
+    * **Type Safety:** Implemented stringent data **Type Validation** across the frontend-backend boundary to prevent runtime errors.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🌐 Backend Decisions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* **Technology Choice:** We chose **Express.js** and **MongoDB** over modern, simplified solutions like Supabase or Next.js API Routes.
+* **Rationale:** The hypothesis (supported by AI consultation) was that coding challenges would deliberately require candidates to demonstrate foundational knowledge by setting up a traditional **RESTful API** and managing a database connection manually, rather than relying on simplified frameworks.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### 🧪 Testing Strategy: The FSM Approach
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Our strategy focused on building confidence with robust **Integration Tests**, aligning with the **Testing Trophy** philosophy.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<img width="300" height="400" alt="Untitled diagram-2025-11-22-090226" src="https://github.com/user-attachments/assets/13e164bd-6f71-49f4-8e49-8cbdf4b4ef53" />
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### 1. Test Case Design (Design-First)
+Test cases were extracted using a **State Transition Diagram (FSM)** modeled in **Mermaid**. This process was crucial:
+* **Clarity:** It clearly defined valid states and actions, simplifying the subsequent test implementation.
+* **Edge Case Detection:** Formal state modeling helped anticipate specific edge cases (e.g., what happens when clicking 'Complete' while in the 'Editing' state).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### 2. Test Case Segmentation (The Two Core Scenarios)
+The tests were separated into two logical groups:
 
-## Learn More
+| Scenario | Focus | Rationale |
+| :--- | :--- | :--- |
+| **App Level** | Empty List $\leftrightarrow$ Populated List | Verifies the core conditional rendering (e.g., "There is no todo" message appears/disappears) during boundary transitions (0 $\leftrightarrow$ 1+ todos). |
+| **Item Level** | Individual Todo State | Focuses on the lifecycle of a single item (Idle, Editing, Completed) and ensuring **list stability** (checking that completing one item does not destabilize the others). |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This segmentation prevents the test code from becoming redundant and simplifies future additions like **Pagination** or **Filtering**.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+### ⏭️ Future Commitments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* **Backend Testing:** Implementing unit and integration tests for the Express API handlers and MongoDB logic.
+* **E2E Testing:** Introduction of an End-to-End framework (e.g., Playwright) to validate critical user flows across a real browser environment.
