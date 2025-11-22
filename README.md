@@ -1,4 +1,5 @@
 # Basic Todo App 
+![Kapture 2025-11-22 at 05 14 05](https://github.com/user-attachments/assets/9f5ff4a1-003f-4f72-ae04-7e42529696fc)
 
 ## 🛠 Tech Stack
 | Category | Technologies |
@@ -43,7 +44,6 @@ npm install
 # 3. Configure Environment Variables
 # Create a .env file in the 'todo-api' directory and paste your connection string
 echo "MONGO_URI=your_mongodb_connection_string_here" > .env
-echo "PORT=3001" >> .env
 
 # 4. Install Frontend Dependencies
 cd ../frontend
@@ -100,12 +100,10 @@ Our frontend architecture evolved to comply with current best practices:
 
 Our strategy focused on building confidence with robust **Integration Tests**, aligning with the **Testing Trophy** philosophy.
 
-
 #### 1. Test Case Design (Design-First)
-Test cases were extracted using a **State Transition Diagram (UML)** modeled in **Mermaid**. This process was crucial:
+Test cases were extracted using a **State Transition Diagram (UML)** modeled in **Mermaid**. 
+
 <img width="300" height="400" alt="Untitled diagram-2025-11-22-090226" src="https://github.com/user-attachments/assets/13e164bd-6f71-49f4-8e49-8cbdf4b4ef53" />
-* **Clarity:** It clearly defined valid states and actions, simplifying the subsequent test implementation.
-* **Edge Case Detection:** Formal state modeling helped anticipate specific edge cases (e.g., what happens when clicking 'Complete' while in the 'Editing' state).
 
 #### 2. Test Case Segmentation (The Two Core Scenarios)
 The tests were separated into two logical groups:
@@ -117,6 +115,16 @@ The tests were separated into two logical groups:
 
 This segmentation prevents the test code from becoming redundant and simplifies future additions like **Pagination** or **Filtering**.
 
+### ✅ Test Cases Coverage
+
+I adopted **All Transitions Coverage (0-switch coverage)** to ensure every possible user interaction logic is verified efficiently.
+
+| Level | Transition Flow | Verification Purpose |
+| :--- | :--- | :--- |
+| **App Level** | `Empty` $\rightarrow$ `Populated(1)` $\rightarrow$ `Populated(2)` $\rightarrow$ `Empty` | Verifies the global UI state, specifically the appearance/disappearance of the "No tasks" message and the correct rendering of the list as items are added and removed. |
+| **Item Level** | `Idle` $\rightarrow$ `Completed` $\rightarrow$ `Idle` | **List Stability Check:** Verifies that completing one item correctly updates its state without destabilizing other items in the list. |
+| **Item Level** | `Idle` $\rightarrow$ `Editing` $\rightarrow$ `Idle` | Verifies the standard update flow, including the toggling of `readOnly` attributes and the appearance of the "Save" button. |
+| **Item Level** | `Idle` $\rightarrow$ `Editing` $\rightarrow$ `Completed` $\rightarrow$ `Idle` | **Edge Case:** Verifies that completing a task *while* in editing mode forcefully exits the edit mode and correctly updates the state to completed. |
 ---
 
 ### ⏭️ Future Commitments
