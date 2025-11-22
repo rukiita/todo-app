@@ -1,3 +1,70 @@
+# Basic Todo App 
+
+## 🛠 Tech Stack
+| Category | Technologies |
+| :--- | :--- |
+| **Frontend** | ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) 
+| **Backend** | ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) ![Express](https://img.shields.io/badge/-Express-000000?logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?logo=mongodb&logoColor=white) |
+| **Testing** | ![Jest](https://img.shields.io/badge/-Jest-C21325?logo=jest&logoColor=white) ![Testing Library](https://img.shields.io/badge/-Testing_Library-E33332?logo=testing-library&logoColor=white) |
+| **Tooling** | ![npm](https://img.shields.io/badge/-npm-CB3837?logo=npm&logoColor=white) ![Git](https://img.shields.io/badge/-Git-F05032?logo=git&logoColor=white) |
+
+## ⚙️ How to use it
+
+Follow these steps to set up and run the application locally.
+
+### 1. MongoDB Atlas Setup
+
+Before running the application, you need to set up a cloud database.
+
+1.  **Create an Account:** Sign up or log in to [MongoDB Atlas](https://www.mongodb.com/atlas/database).
+2.  **Create a Cluster:** Deploy a free shared cluster.
+3.  **Create Database & Collection:**
+    * Go to the **Browse Collections** tab.
+    * Create a new database named **`todoList`**.
+    * Create a collection named **`todos`**.
+4.  **Get Connection String:**
+    * Go to **Database Access** to create a database user (username/password).
+    * Go to **Network Access** and allow access from anywhere (`0.0.0.0/0`) or your specific IP.
+    * Click **Connect** > **Connect your application** and copy the connection string (e.g., `mongodb+srv://...`).
+
+### 2. Installation & Configuration
+
+Clone the repository and install dependencies for both the frontend and backend.
+
+```bash
+# 1. Clone the repository
+git clone [https://github.com/YOUR_USERNAME/todo-app.git](https://github.com/YOUR_USERNAME/todo-app.git)
+cd todo-app
+
+# 2. Install Backend Dependencies
+cd todo-api
+npm install
+
+# 3. Configure Environment Variables
+# Create a .env file in the 'todo-api' directory and paste your connection string
+echo "MONGO_URI=your_mongodb_connection_string_here" > .env
+echo "PORT=3001" >> .env
+
+# 4. Install Frontend Dependencies
+cd ../frontend
+npm install
+```
+3. Running the Application
+Once the installation is complete, you can start the application.
+
+Navigate to the root directory (or set up a concurrent script) and run:
+
+```bash
+
+# If you have a root script set up with 'concurrently':
+npm run dev
+# Alternatively, you can run them in separate terminals:
+
+cd todo-api && npm start (Runs on port 3001)
+
+cd frontend && npm start (Runs on port 3000)
+```
+
 ### 📝 Project Deep Dive: Technical Decisions & Learnings
 
 This section details the architectural choices, testing strategy, and key takeaways from the 3-day development cycle, designed to meet the standards of modern engineering practices.
@@ -7,8 +74,6 @@ This section details the architectural choices, testing strategy, and key takeaw
 The primary goal of this project was to simulate a real-world **Front-End Coding Challenge** often used by international tech companies. The process prioritized **testability, clean architecture, and error handling** over speed.
 
 Our workflow was: **Frontend $\rightarrow$ Backend (Initial) $\rightarrow$ Refactoring $\rightarrow$ Test Design $\rightarrow$ Frontend Testing.**
-
----
 
 ### 💡 Architectural Evolution & Frontend Refactoring
 
