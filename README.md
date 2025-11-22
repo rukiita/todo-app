@@ -64,14 +64,13 @@ cd todo-api && npm start (Runs on port 3001)
 
 cd frontend && npm start (Runs on port 3000)
 ```
+# 📝 Technical Decisions
 
-### 📝 Project Deep Dive: Technical Decisions & Learnings
+This section details the architectural choices, testing strategy, and key takeaways from the 3-day development cycle
 
-This section details the architectural choices, testing strategy, and key takeaways from the 3-day development cycle, designed to meet the standards of modern engineering practices.
+### 🎯 Project Goal & Strategy
 
-#### 🎯 Project Goal & Strategy
-
-The primary goal of this project was to simulate a real-world **Front-End Coding Challenge** often used by international tech companies. The process prioritized **testability, clean architecture, and error handling** over speed.
+The primary goal of this project was to simulate a real-world **Front-End Coding Challenge** often used by international tech companies. 
 
 Our workflow was: **Frontend $\rightarrow$ Backend (Initial) $\rightarrow$ Refactoring $\rightarrow$ Test Design $\rightarrow$ Frontend Testing.**
 
@@ -80,7 +79,7 @@ Our workflow was: **Frontend $\rightarrow$ Backend (Initial) $\rightarrow$ Refac
 Our frontend architecture evolved to comply with current best practices:
 
 * **Initial Structure:** The application began with a centralized state (`Home` component) handling all **CRUD** methods and passing them down as props to children (`List` and `Form`).
-* **Refactoring to Custom Hooks (Best Practice):** As asynchronous operations (API calls) were introduced, the logic became complex. We extracted all state management and asynchronous methods into a dedicated custom hook (`useTodos`).
+* **Refactoring to Custom Hooks** As asynchronous operations (API calls) were introduced, the logic became complex. We extracted all state management and asynchronous methods into a dedicated custom hook (`useTodos`).
     * **Benefit:** This achieves a **Separation of Concerns**, making the UI components purely presentational and significantly improving testability and code readability.
 * **Performance:** Implemented `useCallback` on memoized functions within the custom hook to prevent the unnecessary re-creation of functions, optimizing rendering performance when passed as dependencies or props.
 * **UX & Error Handling:** Fixed critical issues regarding the user experience:
@@ -97,14 +96,14 @@ Our frontend architecture evolved to comply with current best practices:
 
 ---
 
-### 🧪 Testing Strategy: The FSM Approach
+### 🧪 Testing Strategy: UML State transition diagram
 
 Our strategy focused on building confidence with robust **Integration Tests**, aligning with the **Testing Trophy** philosophy.
 
-<img width="300" height="400" alt="Untitled diagram-2025-11-22-090226" src="https://github.com/user-attachments/assets/13e164bd-6f71-49f4-8e49-8cbdf4b4ef53" />
 
 #### 1. Test Case Design (Design-First)
-Test cases were extracted using a **State Transition Diagram (FSM)** modeled in **Mermaid**. This process was crucial:
+Test cases were extracted using a **State Transition Diagram (UML)** modeled in **Mermaid**. This process was crucial:
+<img width="300" height="400" alt="Untitled diagram-2025-11-22-090226" src="https://github.com/user-attachments/assets/13e164bd-6f71-49f4-8e49-8cbdf4b4ef53" />
 * **Clarity:** It clearly defined valid states and actions, simplifying the subsequent test implementation.
 * **Edge Case Detection:** Formal state modeling helped anticipate specific edge cases (e.g., what happens when clicking 'Complete' while in the 'Editing' state).
 
