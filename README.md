@@ -135,7 +135,7 @@ To verify the **State Transition** logic and **List Stability** scenarios descri
 cd frontend
 
 # Run the specific test suite
-npm test src/TodoApp.test.tsx
+npm test src/frontend/TodoApp.test.tsx
 ```
 ---
 
